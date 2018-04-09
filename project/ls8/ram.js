@@ -13,6 +13,9 @@ class RAM {
     write(MAR, MDR) {
         // !!! IMPLEMENT ME
         // write the value in the MDR to the address MAR
+        // The address is just the index into the memory array.
+        this.mem[MAR] = MDR;
+        return MDR;
     }
 
     /**
@@ -23,6 +26,8 @@ class RAM {
     read(MAR) {
         // !!! IMPLEMENT ME
         // Read the value in address MAR and return it
+        MDR = this.mem[MAR];
+        return MDR; 
     }
 }
 
