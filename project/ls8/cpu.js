@@ -2,6 +2,10 @@
  * LS-8 v2.0 emulator skeleton code
  */
 
+const LDI = 10011001
+const PRN = 01000011
+const HLT = 00000001
+
 /**
  * Class for simulating a simple Computer (CPU & memory)
  */
@@ -84,13 +88,15 @@ class CPU {
         // outlined in the LS-8 spec.
 
         switch(IR) {
-            case 0b10011001:  //LDI
+            case LDI:  //LDI
                 this.reg[operandA] = operandB;
                 break;
             case PRN:
-                //TODO
+                console.log(this.reg[operandA]);
+                break;
             case HLT:
-                //TODO
+                this.stopClock();
+                break;
         }
 
         // Increment the PC register to go to the next instruction. Instructions
