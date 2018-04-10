@@ -17,7 +17,6 @@ function loadMemory() {
         // "01000011", // PRN R0    Print the value in R0
         // "00000000",
         // "00000001"  // HLT       Halt and quit
-        
         "10011001", // # LDI R0,8
         "00000000",
         "00001000",
@@ -29,7 +28,8 @@ function loadMemory() {
         "00000001",
         "01000011", // # PRN R0
         "00000000",
-        "00000001" // # HLT
+         "00000001" // # HLT
+       
     ];
 
     // Load the program into the CPU's memory a byte at a time
@@ -45,8 +45,8 @@ function loadMemory() {
 let ram = new RAM(256);
 let cpu = new CPU(ram);
 
-// TODO: get name of ls8 file to load from command line
-
+// // TODO: get name of ls8 file to load from command line
+        
 
 loadMemory(cpu);
 

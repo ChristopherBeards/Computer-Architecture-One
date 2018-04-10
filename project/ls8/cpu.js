@@ -2,9 +2,10 @@
  * LS-8 v2.0 emulator skeleton code
  */
 
-const LDI = 10011001
-const PRN = 01000011
-const HLT = 00000001
+const LDI = 0b10011001;
+const PRN = 0b01000011;
+const HLT = 0b00000001;
+const MUL = 0b10101010;
 
 /**
  * Class for simulating a simple Computer (CPU & memory)
@@ -60,6 +61,7 @@ class CPU {
         switch (op) {
             case 'MUL':
                 // !!! IMPLEMENT ME
+                this.reg[regA] *= this.reg[regB];
                 break;
         }
     }
@@ -96,8 +98,14 @@ class CPU {
             case PRN:
                 console.log(this.reg[operandA]);
                 break;
+            case MUL:
+                this.alu("MUL", operandA, operandB);
+                break;
             case HLT:
                 this.stopClock();
+                break;
+            default: 
+            console.log("uknownInstruction")
                 break;
         }
 
@@ -106,15 +114,16 @@ class CPU {
         // instruction byte tells you how many bytes follow the instruction byte
         // for any particular instruction.
         
-        0b10011001 >> 6 == 0b00000010;
+        // 0b10011001 >> 6 == 0b00000010;
 
         //00000010 & 00000011 == 00000010;
+        //0b00000010 & 0b00000011 == 0b00000001;
 
-
-        let operandCount = (IR >>>6) & 0b11;
-        let totalInstructionLen = operandCount + 1;
-
-        this.reg.PC += totalInstructionLen;
+         let operandCount = (IR >>> 6) & 0b11;
+         let totalInstructionLen = operandCount + 1;
+         this.reg.PC += totalInstructionLen;
+        
+        
     }
 }
 
