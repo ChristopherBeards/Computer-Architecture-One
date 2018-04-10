@@ -68,7 +68,7 @@ class CPU {
         // from the memory address pointed to by the PC. (I.e. the PC holds the
         // index into memory of the instruction that's about to be executed
         // right now.)
-        const IR = this.ram.read(this.reg.PC);
+        let IR = this.ram.read(this.reg.PC);
         // !!! IMPLEMENT ME
 
         // Debugging output
@@ -77,19 +77,36 @@ class CPU {
         // Get the two bytes in memory _after_ the PC in case the instruction
         // needs them.
 
-        // !!! IMPLEMENT ME
+        let operandA = this.ram.read(this.reg.PC + 1);
+        let operandB = this.ram.read(this.reg.PC + 2);
 
         // Execute the instruction. Perform the actions for the instruction as
         // outlined in the LS-8 spec.
 
-        // !!! IMPLEMENT ME
+        switch(IR) {
+            case 0b10011001:  //LDI
+                this.reg[operandA] = operandB;
+                break;
+            case PRN:
+                //TODO
+            case HLT:
+                //TODO
+        }
 
         // Increment the PC register to go to the next instruction. Instructions
         // can be 1, 2, or 3 bytes long. Hint: the high 2 bits of the
         // instruction byte tells you how many bytes follow the instruction byte
         // for any particular instruction.
         
-        // !!! IMPLEMENT ME
+        10011001 >> 6 == 00000010;
+
+        00000010 & 00000011 == 00000010
+
+
+        let operandCount = (IR >>>6) & 0b11;
+        let totalInstructionLen = operandCount + 1;
+
+        this.reg.PC += totalInstructionLen;
     }
 }
 
