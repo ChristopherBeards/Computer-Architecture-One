@@ -76,11 +76,13 @@ class CPU {
         // !!! IMPLEMENT ME
 
         // Debugging output
-        //console.log(`${this.reg.PC}: ${IR.toString(2)}`);
+        console.log(`${this.reg.PC}: ${IR.toString(2)}`);
 
         // Get the two bytes in memory _after_ the PC in case the instruction
         // needs them.
 
+        
+        
         let operandA = this.ram.read(this.reg.PC + 1);
         let operandB = this.ram.read(this.reg.PC + 2);
 
@@ -104,9 +106,9 @@ class CPU {
         // instruction byte tells you how many bytes follow the instruction byte
         // for any particular instruction.
         
-        10011001 >> 6 == 00000010;
+        0b10011001 >> 6 == 0b00000010;
 
-        00000010 & 00000011 == 00000010
+        //00000010 & 00000011 == 00000010;
 
 
         let operandCount = (IR >>>6) & 0b11;
