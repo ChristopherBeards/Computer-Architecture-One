@@ -68,7 +68,7 @@ class CPU {
         // from the memory address pointed to by the PC. (I.e. the PC holds the
         // index into memory of the instruction that's about to be executed
         // right now.)
-
+        const IR = this.ram.read(this.reg.PC);
         // !!! IMPLEMENT ME
 
         // Debugging output
