@@ -15,7 +15,6 @@ class RAM {
         // write the value in the MDR to the address MAR
         // The address is just the index into the memory array.
         this.mem[MAR] = MDR;
-        return MDR;
     }
 
     /**
