@@ -8,16 +8,19 @@ const fs = require('fs');
  * TODO: load this from a file on disk instead of having it hardcoded
  */
 function loadMemory() {
-
-    // Hardcoded program to print the number 8 on the console
+  
+  // Hardcoded program to print the number 8 on the console
     const file = process.argv[2];
     const program = fs
-      .readFileSync(file)
-      .toString()
-      .split('\n')
-      .reduce((arr, elem) => {
-        return elem[0] !== '#' && elem !== '' ? arr.concat(elem.slice(0, 8)) : arr;
-      }, []);
+    .readFileSync(file)
+    .toString()
+    .split('\n')
+    .reduce((arr, elem) => {
+      return elem[0] !== '#' && elem !== '' ? arr.concat(elem.slice(0, 8)) : arr;
+    }, [])
+    .filter(file => {
+      return file !== '\r';
+    });
     
 
     // Load the program into the CPU's memory a byte at a time

@@ -8,6 +8,9 @@ const HLT  = 0b00000001;
 const MUL  = 0b10101010;
 const POP  = 0b01001100;
 const PUSH = 0b01001101;
+const CALL = 0b01001000;
+const RET  = 0b00001001;
+const ADD  = 0b10101000;
 
 
 /**
@@ -25,6 +28,7 @@ class CPU {
         
         // Special-purpose registers
         this.reg.PC = 0; // Program Counter
+        this.flag = false;
     }
 	
     /**
@@ -66,6 +70,9 @@ class CPU {
                 // !!! IMPLEMENT ME
                 this.reg[regA] *= this.reg[regB];
                 break;
+            case 'ADD':
+                this.reg[regA] += this.reg[regB];
+                break;
         }
     }
 
@@ -94,6 +101,11 @@ class CPU {
         // Execute the instruction. Perform the actions for the instruction as
         // outlined in the LS-8 spec.
 
+          const _push = (value) => {
+            this.reg[7]--;
+            this.ram.write(this.reg[7], value);
+        }
+
         switch(IR) {
             case LDI:  //LDI
                 this.reg[operandA] = operandB;
@@ -105,21 +117,34 @@ class CPU {
                 this.alu("MUL", operandA, operandB);
                 break;
             case PUSH:
-                if (this.reg[8] === 0) this.reg[8] = 0xF4; 
-                this.reg[8]--;
-                this.ram.write(this.reg[8], this.reg[operandA]);
+                if (this.reg[7] === 0) this.reg[7] = 0xF4; 
+                _push(this.reg[operandA]);
                 break;
             case POP:
-                this.reg[operandA] = this.ram.read(this.reg[8]);
-                this.reg[8]++;
+                this.reg[operandA] = this.ram.read(this.reg[7]);
+                this.reg[7]++;
+                break;
+            case ADD:
+                this.alu("ADD", operandA, operandB);
+                break;
+            case CALL:
+                this.flag = true;
+                _push(this.reg.PC+2);
+                this.reg.PC = this.reg[operandA];
+                break;
+            case RET:
+                this.flag = true;
+                this.reg.PC = this.ram.read(this.reg[7]);
+                this.reg[7]++;
                 break;
             case HLT:
                 this.stopClock();
                 break    
             default: 
-            // console.log("uknownInstruction")
+            // console.log("unknownInstruction")
                 break;
         }
+
 
         // Increment the PC register to go to the next instruction. Instructions
         // can be 1, 2, or 3 bytes long. Hint: the high 2 bits of the
@@ -130,10 +155,13 @@ class CPU {
 
         //00000010 & 00000011 == 00000010;
         //0b00000010 & 0b00000011 == 0b00000001;
-
-         let operandCount = (IR >>> 6) & 0b11;
-         let totalInstructionLen = operandCount + 1;
-         this.reg.PC += totalInstructionLen;
+        
+        if (!this.flag) {
+          let operandCount = (IR >>> 6) & 0b11;
+          let totalInstructionLen = operandCount + 1;
+          this.reg.PC += totalInstructionLen;  
+        }
+        this.flag = false;
         
         
     }
