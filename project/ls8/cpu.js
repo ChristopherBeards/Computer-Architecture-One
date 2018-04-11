@@ -78,7 +78,7 @@ class CPU {
         // !!! IMPLEMENT ME
 
         // Debugging output
-        console.log(`${this.reg.PC}: ${IR.toString(2)}`);
+        // console.log(`${this.reg.PC}: ${IR.toString(2)}`);
 
         // Get the two bytes in memory _after_ the PC in case the instruction
         // needs them.
@@ -105,7 +105,7 @@ class CPU {
                 this.stopClock();
                 break;
             default: 
-            console.log("uknownInstruction")
+            // console.log("uknownInstruction")
                 break;
         }
 
