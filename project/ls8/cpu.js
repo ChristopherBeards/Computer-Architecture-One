@@ -2,10 +2,13 @@
  * LS-8 v2.0 emulator skeleton code
  */
 
-const LDI = 0b10011001;
-const PRN = 0b01000011;
-const HLT = 0b00000001;
-const MUL = 0b10101010;
+const LDI  = 0b10011001;
+const PRN  = 0b01000011;
+const HLT  = 0b00000001;
+const MUL  = 0b10101010;
+const POP  = 0b01001100;
+const PUSH = 0b01001101;
+
 
 /**
  * Class for simulating a simple Computer (CPU & memory)
@@ -101,9 +104,18 @@ class CPU {
             case MUL:
                 this.alu("MUL", operandA, operandB);
                 break;
+            case PUSH:
+                if (this.reg[8] === 0) this.reg[8] = 0xF4; 
+                this.reg[8]--;
+                this.ram.write(this.reg[8], this.reg[operandA]);
+                break;
+            case POP:
+                this.reg[operandA] = this.ram.read(this.reg[8]);
+                this.reg[8]++;
+                break;
             case HLT:
                 this.stopClock();
-                break;
+                break    
             default: 
             // console.log("uknownInstruction")
                 break;
